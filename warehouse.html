@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übersicht der LKWs</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aktuelle LKW Übersicht</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>LKW Nummer</th>
+                <th>Lade-/Entladezeit</th>
+                <th>Halle</th>
+                <th>Material-Reihen</th>
+                <th>Dauer im Lager</th>
+            </tr>
+        </thead>
+        <tbody id="truck-table">
+            <!-- Dynamisch eingefügte LKW-Daten -->
+        </tbody>
+    </table>
+
+    <script>
+        const trucks = [
+            { truckNumber: "AB1234", unloadTime: "2024-10-04T09:00", hallLocation: "Halle 4", materialRows: "AA13", startTime: new Date() }
+            // Weitere Trucks können hier hinzugefügt werden
+        ];
+
+        function updateTruckTable() {
+            const table = document.getElementById("truck-table");
+            table.innerHTML = "";
+
+            trucks.forEach(truck => {
+                const row = document.createElement("tr");
+
+                const truckNumberCell = document.createElement("td");
+                truckNumberCell.textContent = truck.truckNumber;
+                row.appendChild(truckNumberCell);
+
+                const unloadTimeCell = document.createElement("td");
+                unloadTimeCell.textContent = new Date(truck.unloadTime).toLocaleString();
+                row.appendChild(unloadTimeCell);
+
+                const hallLocationCell = document.createElement("td");
+                hallLocationCell.textContent = truck.hallLocation;
+                row.appendChild(hallLocationCell);
+
+                const materialRowsCell = document.createElement("td");
+                materialRowsCell.textContent = truck.materialRows;
+                row.appendChild(materialRowsCell);
+
+                const durationCell = document.createElement("td");
+                const now = new Date();
+                const timeDiff = Math.abs(now - truck.startTime) / 36e5;
+                durationCell.textContent = `${Math.round(timeDiff)} Stunden`;
+                row.appendChild(durationCell);
+
+                table.appendChild(row);
+            });
+        }
+
+        setInterval(updateTruckTable, 10000); // Aktualisiert die Tabelle alle 10 Sekunden
+    </script>
+</body>
+</html>
